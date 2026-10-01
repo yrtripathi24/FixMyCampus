@@ -2,9 +2,15 @@
 
 FixMyCampus is a Flask application for reporting and managing physical problems around a college campus. Its core feature will be deterministic incident deduplication: multiple reports about the same real-world problem can be recognized and grouped without AI or LLMs.
 
-## Checkpoint 0: project foundation
+## Current checkpoint: database and core data model
 
-The current project contains the Flask application factory and a basic landing page. Database models, reporting, and duplicate detection will be added in later checkpoints.
+The project contains the Flask application factory, a basic landing page, and SQLite persistence for incidents and reports. Reporting workflows and duplicate detection will be added in later checkpoints.
+
+Initialize the development database with:
+
+```text
+flask --app run.py init-db
+```
 
 ## Local setup
 
