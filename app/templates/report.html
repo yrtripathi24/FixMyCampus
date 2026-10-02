@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <main class="page-shell">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <main id="main-content" class="page-shell">
         <a class="back-link" href="{{ url_for('main.home') }}">← Back to home</a>
         <p class="eyebrow">Help improve campus</p>
         <h1>Report a problem</h1>
@@ -21,7 +22,7 @@
                     <option value="{{ category }}" {% if form_data.category == category %}selected{% endif %}>{{ category }}</option>
                 {% endfor %}
             </select>
-            {% if errors.category %}<p class="field-error">{{ errors.category }}</p>{% endif %}
+            {% if errors.category %}<p class="field-error" role="alert">{{ errors.category }}</p>{% endif %}
 
             <label for="location_id">Location</label>
             <select id="location_id" name="location_id" required>
@@ -32,19 +33,19 @@
                     </option>
                 {% endfor %}
             </select>
-            {% if errors.location %}<p class="field-error">{{ errors.location }}</p>{% endif %}
+            {% if errors.location %}<p class="field-error" role="alert">{{ errors.location }}</p>{% endif %}
 
             <label for="location_detail">Location details <span class="muted">(optional)</span></label>
             <input id="location_detail" name="location_detail" value="{{ form_data.location_detail }}" maxlength="200" placeholder="Beside the vending machine">
-            {% if errors.location_detail %}<p class="field-error">{{ errors.location_detail }}</p>{% endif %}
+            {% if errors.location_detail %}<p class="field-error" role="alert">{{ errors.location_detail }}</p>{% endif %}
 
             <label for="description">Description</label>
             <textarea id="description" name="description" rows="6" maxlength="1000" required>{{ form_data.description }}</textarea>
-            {% if errors.description %}<p class="field-error">{{ errors.description }}</p>{% endif %}
+            {% if errors.description %}<p class="field-error" role="alert">{{ errors.description }}</p>{% endif %}
 
             <label for="photo">Photo evidence <span class="muted">(optional, max 5 MB)</span></label>
             <input id="photo" name="photo" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
-            {% if errors.photo %}<p class="field-error">{{ errors.photo }}</p>{% endif %}
+            {% if errors.photo %}<p class="field-error" role="alert">{{ errors.photo }}</p>{% endif %}
 
             <button class="button" type="submit">Submit report</button>
         </form>

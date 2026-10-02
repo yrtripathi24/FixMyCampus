@@ -7,11 +7,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <main class="hero">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="home-nav" aria-label="Primary navigation">
+        <a class="back-link" href="{{ url_for('main.home') }}">FixMyCampus</a>
+        <span>
+            <a href="{{ url_for('main.incidents') }}">View incidents</a>
+            <a href="{{ url_for('main.analytics') }}">Analytics</a>
+        </span>
+    </nav>
+    <main id="main-content" class="hero">
         <p class="eyebrow">Campus care, made visible</p>
         <h1>FixMyCampus</h1>
         <p class="intro">Report problems around campus and help turn repeated complaints into clear, actionable incidents.</p>
-        <a class="button" href="{{ url_for('main.report') }}">Report a problem</a>
+        <div class="hero-actions">
+            <a class="button" href="{{ url_for('main.report') }}">Report a problem</a>
+            <a class="text-link" href="{{ url_for('main.incidents') }}">Browse reported issues</a>
+        </div>
     </main>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>

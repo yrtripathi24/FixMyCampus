@@ -9,12 +9,65 @@ body {
     margin: 0;
 }
 
+a {
+    color: #39734a;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #e6a82e;
+    outline-offset: 3px;
+}
+
+.skip-link {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    padding: 0.65rem 0.85rem;
+    color: white;
+    border-radius: 0.35rem;
+    background: #17211b;
+    transform: translateY(-200%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+.home-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: auto;
+    padding: 1.25rem 2rem;
+}
+
+.home-nav span,
+.top-nav span {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .hero {
     box-sizing: border-box;
     min-height: 100vh;
     max-width: 760px;
     margin: auto;
     padding: 18vh 2rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .eyebrow {
@@ -43,12 +96,16 @@ h1 {
     padding: 0.8rem 1.1rem;
     border-radius: 0.5rem;
     color: white;
+    border: 1px solid #22643a;
     background: #22643a;
+    cursor: pointer;
+    font: inherit;
     text-decoration: none;
 }
 
 .button:hover,
 .button:focus-visible {
+    color: white;
     background: #17472a;
 }
 
@@ -69,6 +126,11 @@ h1 {
     gap: 0.55rem;
     max-width: 38rem;
     margin-top: 2rem;
+}
+
+.report-form label,
+.filter-form label {
+    font-weight: 650;
 }
 
 input,
@@ -92,6 +154,10 @@ textarea {
 .field-error {
     margin: -0.65rem 0 0.35rem;
     color: #a12e2e;
+}
+
+input::placeholder {
+    color: #65706a;
 }
 
 .confirmation {
@@ -230,6 +296,11 @@ textarea {
     color: #39734a;
 }
 
+.text-link:hover,
+.text-link:focus-visible {
+    color: #17472a;
+}
+
 .admin-section {
     margin-top: 3rem;
 }
@@ -328,6 +399,43 @@ textarea {
 }
 
 @media (max-width: 600px) {
+    .home-nav,
+    .top-nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .home-nav span,
+    .top-nav span {
+        width: 100%;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 12vh 1rem 5rem;
+    }
+
+    .page-shell {
+        padding: 2rem 1rem 4rem;
+    }
+
+    .button,
+    .button-small {
+        text-align: center;
+    }
+
+    .hero-actions,
+    .hero-actions .button,
+    .hero-actions .text-link {
+        width: 100%;
+    }
+
+    .hero-actions .text-link {
+        margin: 0.5rem 0;
+        text-align: center;
+    }
+
     .filter-form {
         display: grid;
         align-items: stretch;
@@ -344,5 +452,23 @@ textarea {
     .bar-track {
         grid-column: 1 / -1;
         grid-row: 2;
+    }
+
+    .admin-incident-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-incident-card .button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
     }
 }
