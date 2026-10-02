@@ -5,8 +5,22 @@ from app.repositories.incidents import (
     get_incident,
     list_incidents,
 )
-from app.repositories.reports import get_incident_reports
-from app.services.report_service import CATEGORIES, submit_report, validate_report
+from app.repositories.reports import (
+    attach_report_to_incident,
+    create_report,
+    get_incident_reports,
+    get_report,
+)
+from app.services.duplicate_detector import (
+    DUPLICATE_THRESHOLD,
+    calculate_similarity,
+    find_duplicate_candidates,
+)
+from app.services.report_service import (
+    CATEGORIES,
+    create_incident_for_report,
+    validate_report,
+)
 
 
 main_bp = Blueprint("main", __name__)
@@ -29,7 +43,24 @@ def report():
             request.form.get("description", ""),
         )
         if not errors:
-            incident, report = submit_report(**form_data)
+            report = create_report(**form_data)
+            candidates = find_duplicate_candidates(
+                report, list_incidents(status="OPEN")
+            )
+            candidate = next(
+                (item for item in candidates if item.score >= DUPLICATE_THRESHOLD),
+                None,
+            )
+            if candidate is not None:
+                return render_template(
+                    "duplicate_confirmation.html",
+                    candidate=candidate,
+                    report=report,
+                    report_count=count_incident_reports(candidate.incident.id),
+                )
+
+            incident = create_incident_for_report(report)
+            attach_report_to_incident(report.id, incident.id)
             return render_template(
                 "report_confirmation.html", incident=incident, report=report
             )
@@ -40,6 +71,36 @@ def report():
         form_data=form_data,
         errors=errors,
     )
+
+
+@main_bp.post("/report/decision")
+def report_decision():
+    action = request.form.get("action")
+    try:
+        report_id = int(request.form.get("report_id", ""))
+        incident_id = int(request.form.get("incident_id", ""))
+    except ValueError:
+        abort(400)
+
+    report = get_report(report_id)
+    incident = get_incident(incident_id)
+    if report is None or report.incident_id is not None or incident is None:
+        abort(400)
+
+    if action == "same":
+        if (
+            incident.status != "OPEN"
+            or calculate_similarity(report, incident) < DUPLICATE_THRESHOLD
+        ):
+            abort(400)
+        attach_report_to_incident(report.id, incident.id)
+    elif action == "new":
+        incident = create_incident_for_report(report)
+        attach_report_to_incident(report.id, incident.id)
+    else:
+        abort(400)
+
+    return render_template("report_confirmation.html", incident=incident, report=report)
 
 
 @main_bp.get("/incidents")

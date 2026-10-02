@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Possible existing issue - FixMyCampus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell confirmation">
+        <p class="eyebrow">Possible existing issue</p>
+        <h1>Have students already reported this?</h1>
+        <div class="summary-card">
+            <h2>{{ candidate.incident.title }}</h2>
+            <p>{{ candidate.incident.category }} · {{ candidate.incident.location }}</p>
+            <p><strong>{{ report_count }} report(s)</strong> are already linked to this incident.</p>
+            <p><strong>Similarity score:</strong> {{ candidate.score }}%</p>
+        </div>
+        <div class="decision-actions">
+            <form method="post" action="{{ url_for('main.report_decision') }}">
+                <input type="hidden" name="report_id" value="{{ report.id }}">
+                <input type="hidden" name="incident_id" value="{{ candidate.incident.id }}">
+                <input type="hidden" name="action" value="same">
+                <button class="button" type="submit">This is the same issue</button>
+            </form>
+            <form method="post" action="{{ url_for('main.report_decision') }}">
+                <input type="hidden" name="report_id" value="{{ report.id }}">
+                <input type="hidden" name="incident_id" value="{{ candidate.incident.id }}">
+                <input type="hidden" name="action" value="new">
+                <button class="button secondary-button" type="submit">Create a new issue instead</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

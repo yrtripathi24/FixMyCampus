@@ -1,5 +1,5 @@
 from app.repositories.incidents import create_incident
-from app.repositories.reports import create_report
+from app.repositories.reports import attach_report_to_incident, create_report
 
 
 CATEGORIES = (
@@ -35,7 +35,12 @@ def validate_report(category, location, description):
 
 
 def submit_report(category, location, description):
-    title = description.split(".", 1)[0][:120]
-    incident = create_incident(title, category, location)
-    report = create_report(description, category, location, incident.id)
+    report = create_report(description, category, location)
+    incident = create_incident_for_report(report)
+    attach_report_to_incident(report.id, incident.id)
     return incident, report
+
+
+def create_incident_for_report(report):
+    title = report.description.split(".", 1)[0][:120]
+    return create_incident(title, report.category, report.location)
