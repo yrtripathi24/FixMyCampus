@@ -1,4 +1,13 @@
-from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    abort,
+    current_app,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
 
 from app.repositories.incidents import (
     count_incident_reports,
@@ -28,6 +37,7 @@ from app.services.report_service import (
     refresh_incident_priority,
     validate_report,
 )
+from app.services.photo_service import PhotoValidationError, save_photo
 
 
 main_bp = Blueprint("main", __name__)
@@ -36,6 +46,11 @@ main_bp = Blueprint("main", __name__)
 @main_bp.get("/")
 def home():
     return render_template("home.html")
+
+
+@main_bp.get("/uploads/<path:filename>")
+def uploaded_photo(filename):
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], filename)
 
 
 @main_bp.get("/admin/incidents")
@@ -91,7 +106,22 @@ def report():
         if "location" in errors and location_id_value:
             errors["location"] = "Choose a valid campus location."
         if not errors:
-            report = create_report(**form_data)
+            try:
+                photo_filename = save_photo(
+                    request.files.get("photo"), current_app.config["UPLOAD_FOLDER"]
+                )
+            except PhotoValidationError as error:
+                errors["photo"] = str(error)
+            if errors:
+                return render_template(
+                    "report.html",
+                    categories=CATEGORIES,
+                    locations=list_locations(),
+                    form_data=form_data,
+                    errors=errors,
+                )
+
+            report = create_report(**form_data, photo_filename=photo_filename)
             candidates = find_duplicate_candidates(
                 report, list_incidents(status="OPEN")
             )

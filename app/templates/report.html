@@ -13,7 +13,7 @@
         <h1>Report a problem</h1>
         <p class="intro">Tell us what needs attention. Clear details help campus teams respond faster.</p>
 
-        <form class="report-form" method="post">
+        <form class="report-form" method="post" enctype="multipart/form-data">
             <label for="category">Category</label>
             <select id="category" name="category" required>
                 <option value="">Select a category</option>
@@ -41,6 +41,10 @@
             <label for="description">Description</label>
             <textarea id="description" name="description" rows="6" maxlength="1000" required>{{ form_data.description }}</textarea>
             {% if errors.description %}<p class="field-error">{{ errors.description }}</p>{% endif %}
+
+            <label for="photo">Photo evidence <span class="muted">(optional, max 5 MB)</span></label>
+            <input id="photo" name="photo" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+            {% if errors.photo %}<p class="field-error">{{ errors.photo }}</p>{% endif %}
 
             <button class="button" type="submit">Submit report</button>
         </form>

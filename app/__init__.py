@@ -12,12 +12,15 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY="dev",
         DATABASE=os.path.join(app.instance_path, "fixmycampus.sqlite"),
+        UPLOAD_FOLDER=os.path.join(app.instance_path, "uploads"),
+        MAX_CONTENT_LENGTH=5 * 1024 * 1024,
     )
 
     if test_config is not None:
         app.config.update(test_config)
 
     os.makedirs(app.instance_path, exist_ok=True)
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)

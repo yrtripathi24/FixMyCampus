@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS reports (
     location TEXT NOT NULL,
     location_id INTEGER REFERENCES locations(id),
     location_detail TEXT NOT NULL DEFAULT '',
+    photo_filename TEXT,
     created_at TEXT NOT NULL
 );
 """
@@ -91,6 +92,7 @@ def _add_missing_columns(db):
         ("incidents", "resolved_at TEXT"),
         ("reports", "location_id INTEGER REFERENCES locations(id)"),
         ("reports", "location_detail TEXT NOT NULL DEFAULT ''"),
+        ("reports", "photo_filename TEXT"),
     ):
         columns = {
             row["name"] for row in db.execute(f"PRAGMA table_info({table})")

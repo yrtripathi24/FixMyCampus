@@ -4,4 +4,6 @@ __pycache__/
 .venv/
 instance/*
 !instance/.gitkeep
+!instance/uploads/
+instance/uploads/*
 .env

@@ -26,6 +26,9 @@
             {% for report in reports %}
                 <article class="report-item">
                     <p>{{ report.description }}</p>
+                    {% if report.photo_filename %}
+                        <img class="report-photo" src="{{ url_for('main.uploaded_photo', filename=report.photo_filename) }}" alt="Photo evidence for this report">
+                    {% endif %}
                     <p class="muted">Reported: {{ report.created_at }}</p>
                 </article>
             {% endfor %}

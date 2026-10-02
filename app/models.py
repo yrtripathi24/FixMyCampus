@@ -36,3 +36,4 @@ class Report:
     created_at: str
     location_id: int | None = None
     location_detail: str = ""
+    photo_filename: str | None = None

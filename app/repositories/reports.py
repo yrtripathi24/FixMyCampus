@@ -15,14 +15,15 @@ def create_report(
     incident_id=None,
     location_id=None,
     location_detail="",
+    photo_filename=None,
 ):
     created_at = datetime.now(timezone.utc).isoformat()
     cursor = get_db().execute(
         """
         INSERT INTO reports
             (incident_id, description, category, location, location_id,
-             location_detail, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+             location_detail, photo_filename, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             incident_id,
@@ -31,6 +32,7 @@ def create_report(
             location,
             location_id,
             location_detail,
+            photo_filename,
             created_at,
         ),
     )
