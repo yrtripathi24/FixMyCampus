@@ -16,7 +16,8 @@
             <p>{{ incident.title }}</p>
             <p>{{ incident.category }} · {{ incident.location }}</p>
         </div>
-        <a class="button" href="{{ url_for('main.report') }}">Report another problem</a>
+        <a class="button" href="{{ url_for('main.incidents') }}">View incidents</a>
+        <a class="text-link" href="{{ url_for('main.report') }}">Report another problem</a>
     </main>
 </body>
 </html>

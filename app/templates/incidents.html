@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Campus incidents - FixMyCampus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell dashboard">
+        <nav class="top-nav">
+            <a class="back-link" href="{{ url_for('main.home') }}">FixMyCampus</a>
+            <a class="button button-small" href="{{ url_for('main.report') }}">Report a problem</a>
+        </nav>
+        <p class="eyebrow">Campus overview</p>
+        <h1>Reported incidents</h1>
+        <p class="intro">See the problems currently reported around campus.</p>
+
+        <form class="filter-form" method="get">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+                <option value="">All categories</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="">All statuses</option>
+                {% for status in statuses %}
+                    <option value="{{ status }}" {% if selected_status == status %}selected{% endif %}>{{ status.replace('_', ' ') }}</option>
+                {% endfor %}
+            </select>
+            <button class="button button-small" type="submit">Filter</button>
+        </form>
+
+        {% if incidents %}
+            <section class="incident-grid" aria-label="Incidents">
+                {% for incident in incidents %}
+                    <article class="incident-card">
+                        <p class="status status-{{ incident.status|lower }}">{{ incident.status.replace('_', ' ') }}</p>
+                        <h2><a href="{{ url_for('main.incident_detail', incident_id=incident.id) }}">{{ incident.title }}</a></h2>
+                        <p><strong>Category:</strong> {{ incident.category }}</p>
+                        <p><strong>Location:</strong> {{ incident.location }}</p>
+                        <p><strong>Reports:</strong> {{ report_counts[incident.id] }}</p>
+                        <p class="muted">Reported: {{ incident.created_at }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <p class="empty-state">No incidents match these filters.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

@@ -104,3 +104,115 @@ textarea {
     border-left: 4px solid #39734a;
     background: white;
 }
+
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 4rem;
+}
+
+.button-small {
+    margin-top: 0;
+    padding: 0.55rem 0.8rem;
+    border: 0;
+    font-size: 0.95rem;
+}
+
+.filter-form {
+    display: flex;
+    align-items: end;
+    gap: 0.75rem;
+    margin: 2rem 0;
+}
+
+.filter-form select {
+    width: auto;
+    min-width: 9rem;
+    margin: 0;
+}
+
+.incident-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+}
+
+.incident-card,
+.incident-meta,
+.report-item {
+    padding: 1.25rem;
+    border: 1px solid #d4e0d6;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+.incident-card h2 {
+    margin-top: 0.4rem;
+    font-size: 1.25rem;
+}
+
+.incident-card h2 a {
+    color: inherit;
+}
+
+.status {
+    margin: 0;
+    color: #39734a;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.status-resolved {
+    color: #65706a;
+}
+
+.status-in_progress {
+    color: #9a6b18;
+}
+
+.muted {
+    color: #65706a;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    padding: 2rem;
+    border: 1px dashed #b9c8bb;
+    text-align: center;
+}
+
+.incident-meta {
+    max-width: 42rem;
+    margin: 2rem 0;
+}
+
+.report-list {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 42rem;
+}
+
+.report-item p:first-child {
+    margin-top: 0;
+}
+
+.text-link {
+    display: inline-block;
+    margin: 1rem;
+    color: #39734a;
+}
+
+@media (max-width: 600px) {
+    .filter-form {
+        display: grid;
+        align-items: stretch;
+    }
+
+    .filter-form select {
+        width: 100%;
+    }
+}

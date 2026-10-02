@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ incident.title }} - FixMyCampus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <a class="back-link" href="{{ url_for('main.incidents') }}">← Back to incidents</a>
+        <p class="eyebrow">Incident #{{ incident.id }}</p>
+        <h1>{{ incident.title }}</h1>
+        <div class="incident-meta">
+            <p><strong>Category:</strong> {{ incident.category }}</p>
+            <p><strong>Location:</strong> {{ incident.location }}</p>
+            <p><strong>Status:</strong> {{ incident.status.replace('_', ' ') }}</p>
+            <p><strong>Priority:</strong> {{ incident.priority }}</p>
+            <p><strong>Reports:</strong> {{ reports|length }}</p>
+            <p><strong>Created:</strong> {{ incident.created_at }}</p>
+            <p><strong>Updated:</strong> {{ incident.updated_at }}</p>
+        </div>
+
+        <h2>Reports</h2>
+        <section class="report-list" aria-label="Reports for this incident">
+            {% for report in reports %}
+                <article class="report-item">
+                    <p>{{ report.description }}</p>
+                    <p class="muted">Reported: {{ report.created_at }}</p>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

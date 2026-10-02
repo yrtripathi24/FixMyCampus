@@ -33,8 +33,28 @@ def get_incident(incident_id):
     return _to_incident(row)
 
 
-def list_incidents():
-    rows = get_db().execute(
-        "SELECT * FROM incidents ORDER BY created_at DESC"
-    ).fetchall()
+def list_incidents(category=None, status=None):
+    query = "SELECT * FROM incidents"
+    filters = []
+    values = []
+
+    if category:
+        filters.append("category = ?")
+        values.append(category)
+    if status:
+        filters.append("status = ?")
+        values.append(status)
+    if filters:
+        query += " WHERE " + " AND ".join(filters)
+    query += " ORDER BY created_at DESC"
+
+    rows = get_db().execute(query, values).fetchall()
     return [_to_incident(row) for row in rows]
+
+
+def count_incident_reports(incident_id):
+    row = get_db().execute(
+        "SELECT COUNT(*) AS report_count FROM reports WHERE incident_id = ?",
+        (incident_id,),
+    ).fetchone()
+    return row["report_count"]
