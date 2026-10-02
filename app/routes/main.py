@@ -50,6 +50,11 @@ def home():
     return render_template("home.html")
 
 
+@main_bp.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @main_bp.get("/analytics")
 def analytics():
     return render_template("analytics.html", **get_analytics())

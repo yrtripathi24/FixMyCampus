@@ -18,9 +18,18 @@ def create_app(test_config=None):
         SECRET_KEY=secret_key or "dev",
         ENVIRONMENT=environment,
         DEBUG=os.environ.get("FIXMYCAMPUS_DEBUG", "0") == "1",
-        DATABASE=os.path.join(app.instance_path, "fixmycampus.sqlite"),
-        UPLOAD_FOLDER=os.path.join(app.instance_path, "uploads"),
+        DATABASE=os.environ.get(
+            "FIXMYCAMPUS_DATABASE",
+            os.path.join(app.instance_path, "fixmycampus.sqlite"),
+        ),
+        UPLOAD_FOLDER=os.environ.get(
+            "FIXMYCAMPUS_UPLOAD_FOLDER",
+            os.path.join(app.instance_path, "uploads"),
+        ),
         MAX_CONTENT_LENGTH=5 * 1024 * 1024,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE="Lax",
+        SESSION_COOKIE_SECURE=environment == "production",
     )
 
     if test_config is not None:

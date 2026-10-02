@@ -144,6 +144,26 @@ Priority is explainable rather than objectively perfect. Its score combines repo
 - Debug mode is opt-in with `FIXMYCAMPUS_DEBUG=1`.
 - The initial admin area is intentionally unauthenticated and is suitable only for this prototype.
 
+## Deployment preparation
+
+The application exposes a WSGI entry point in `wsgi.py` and a health check at `/health`.
+
+On a Linux host or platform with persistent storage:
+
+```text
+pip install -r requirements.txt
+export FIXMYCAMPUS_ENV=production
+export FIXMYCAMPUS_SECRET_KEY="use-a-long-random-secret"
+export FIXMYCAMPUS_DATABASE="/persistent-data/fixmycampus.sqlite"
+export FIXMYCAMPUS_UPLOAD_FOLDER="/persistent-data/uploads"
+flask --app wsgi.py init-db
+gunicorn --bind 0.0.0.0:${PORT:-8000} wsgi:app
+```
+
+The SQLite database and upload directory must be mounted on persistent storage. An ephemeral filesystem will lose incidents and photo evidence when the service restarts. Flask serves the versioned static assets, while the WSGI server handles application requests.
+
+Before publishing, verify `/`, `/health`, `/report`, `/incidents`, `/admin/incidents`, `/analytics`, duplicate confirmation, and photo evidence. No live application URL is included because deployment depends on the chosen hosting provider and persistent-volume configuration.
+
 ## Limitations and future improvements
 
 Current limitations include free-text fallback for legacy locations, simple token similarity, no authentication or role system, SQLite as the database, and no background processing. Future work could add secure authentication, richer location matching, audit logs, notifications, production deployment, stronger image handling, and more advanced analytics.
