@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Report a problem - FixMyCampus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <a class="back-link" href="{{ url_for('main.home') }}">← Back to home</a>
+        <p class="eyebrow">Help improve campus</p>
+        <h1>Report a problem</h1>
+        <p class="intro">Tell us what needs attention. Clear details help campus teams respond faster.</p>
+
+        <form class="report-form" method="post">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="">Select a category</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if form_data.category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+            {% if errors.category %}<p class="field-error">{{ errors.category }}</p>{% endif %}
+
+            <label for="location">Location</label>
+            <input id="location" name="location" value="{{ form_data.location }}" maxlength="120" required>
+            {% if errors.location %}<p class="field-error">{{ errors.location }}</p>{% endif %}
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="6" maxlength="1000" required>{{ form_data.description }}</textarea>
+            {% if errors.description %}<p class="field-error">{{ errors.description }}</p>{% endif %}
+
+            <button class="button" type="submit">Submit report</button>
+        </form>
+    </main>
+</body>
+</html>
