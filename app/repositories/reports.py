@@ -49,7 +49,7 @@ def get_report(report_id):
 
 def attach_report_to_incident(report_id, incident_id):
     cursor = get_db().execute(
-        "UPDATE reports SET incident_id = ? WHERE id = ?",
+        "UPDATE reports SET incident_id = ? WHERE id = ? AND incident_id IS NULL",
         (incident_id, report_id),
     )
     get_db().commit()

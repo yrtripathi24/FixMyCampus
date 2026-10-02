@@ -8,6 +8,7 @@ from flask import (
     send_from_directory,
     url_for,
 )
+from pathlib import Path
 
 from app.repositories.incidents import (
     count_incident_reports,
@@ -56,6 +57,8 @@ def analytics():
 
 @main_bp.get("/uploads/<path:filename>")
 def uploaded_photo(filename):
+    if Path(filename).name != filename:
+        abort(404)
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], filename)
 
 
@@ -144,7 +147,8 @@ def report():
                 )
 
             incident = create_incident_for_report(report)
-            attach_report_to_incident(report.id, incident.id)
+            if not attach_report_to_incident(report.id, incident.id):
+                abort(409)
             return render_template(
                 "report_confirmation.html", incident=incident, report=report
             )
@@ -178,11 +182,13 @@ def report_decision():
             or calculate_similarity(report, incident) < DUPLICATE_THRESHOLD
         ):
             abort(400)
-        attach_report_to_incident(report.id, incident.id)
+        if not attach_report_to_incident(report.id, incident.id):
+            abort(409)
         incident = refresh_incident_priority(incident.id)
     elif action == "new":
         incident = create_incident_for_report(report)
-        attach_report_to_incident(report.id, incident.id)
+        if not attach_report_to_incident(report.id, incident.id):
+            abort(409)
     else:
         abort(400)
 
