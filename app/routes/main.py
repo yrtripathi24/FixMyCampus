@@ -20,6 +20,7 @@ from app.services.duplicate_detector import (
 from app.services.report_service import (
     CATEGORIES,
     create_incident_for_report,
+    refresh_incident_priority,
     validate_report,
 )
 
@@ -120,6 +121,7 @@ def report_decision():
         ):
             abort(400)
         attach_report_to_incident(report.id, incident.id)
+        incident = refresh_incident_priority(incident.id)
     elif action == "new":
         incident = create_incident_for_report(report)
         attach_report_to_incident(report.id, incident.id)

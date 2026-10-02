@@ -1,5 +1,11 @@
-from app.repositories.incidents import create_incident
+from app.repositories.incidents import (
+    count_incident_reports,
+    create_incident,
+    get_incident,
+    update_incident_priority,
+)
 from app.repositories.reports import attach_report_to_incident, create_report
+from app.services.priority_service import calculate_priority
 
 
 CATEGORIES = (
@@ -59,10 +65,24 @@ def submit_report(
 
 def create_incident_for_report(report):
     title = report.description.split(".", 1)[0][:120]
+    priority = calculate_priority(1, report.category, report.created_at).priority
     return create_incident(
         title,
         report.category,
         report.location,
+        priority=priority,
         location_id=report.location_id,
         location_detail=report.location_detail,
     )
+
+
+def refresh_incident_priority(incident_id):
+    incident = get_incident(incident_id)
+    if incident is None:
+        return None
+    priority = calculate_priority(
+        count_incident_reports(incident.id),
+        incident.category,
+        incident.created_at,
+    ).priority
+    return update_incident_priority(incident.id, priority)

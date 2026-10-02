@@ -174,6 +174,22 @@ textarea {
     color: #9a6b18;
 }
 
+.priority {
+    font-weight: 700;
+}
+
+.priority-high {
+    color: #a12e2e;
+}
+
+.priority-medium {
+    color: #9a6b18;
+}
+
+.priority-low {
+    color: #39734a;
+}
+
 .muted {
     color: #65706a;
     font-size: 0.9rem;

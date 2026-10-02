@@ -15,7 +15,7 @@
             <p><strong>Category:</strong> {{ incident.category }}</p>
             <p><strong>Location:</strong> {{ incident.location }}</p>
             <p><strong>Status:</strong> {{ incident.status.replace('_', ' ') }}</p>
-            <p><strong>Priority:</strong> {{ incident.priority }}</p>
+            <p><strong>Priority:</strong> <span class="priority priority-{{ incident.priority|lower }}">{{ incident.priority }}</span></p>
             <p><strong>Reports:</strong> {{ reports|length }}</p>
             <p><strong>Created:</strong> {{ incident.created_at }}</p>
             <p><strong>Updated:</strong> {{ incident.updated_at }}</p>

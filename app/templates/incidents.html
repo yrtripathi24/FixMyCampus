@@ -42,6 +42,7 @@
                         <h2><a href="{{ url_for('main.incident_detail', incident_id=incident.id) }}">{{ incident.title }}</a></h2>
                         <p><strong>Category:</strong> {{ incident.category }}</p>
                         <p><strong>Location:</strong> {{ incident.location }}</p>
+                        <p><strong>Priority:</strong> <span class="priority priority-{{ incident.priority|lower }}">{{ incident.priority }}</span></p>
                         <p><strong>Reports:</strong> {{ report_counts[incident.id] }}</p>
                         <p class="muted">Reported: {{ incident.created_at }}</p>
                     </article>
