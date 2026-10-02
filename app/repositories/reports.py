@@ -8,14 +8,31 @@ def _to_report(row):
     return Report(**dict(row)) if row else None
 
 
-def create_report(description, category, location, incident_id=None):
+def create_report(
+    description,
+    category,
+    location,
+    incident_id=None,
+    location_id=None,
+    location_detail="",
+):
     created_at = datetime.now(timezone.utc).isoformat()
     cursor = get_db().execute(
         """
-        INSERT INTO reports (incident_id, description, category, location, created_at)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO reports
+            (incident_id, description, category, location, location_id,
+             location_detail, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """,
-        (incident_id, description, category, location, created_at),
+        (
+            incident_id,
+            description,
+            category,
+            location,
+            location_id,
+            location_detail,
+            created_at,
+        ),
     )
     get_db().commit()
     return get_report(cursor.lastrowid)

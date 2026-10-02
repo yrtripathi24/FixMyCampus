@@ -75,6 +75,13 @@ def test_category_and_location_mismatches_receive_no_points():
     assert calculate_location_score(report, incident) == 0
 
 
+def test_matching_structured_location_ids_receive_full_location_score():
+    report = make_report(location_id=7, location="Different legacy text")
+    incident = make_incident(location_id=7, location="Another legacy text")
+
+    assert calculate_location_score(report, incident) == LOCATION_POINTS
+
+
 def test_text_similarity_handles_capitalization_and_punctuation():
     report = make_report(description="STREETLIGHT outside Block C is broken!")
     incident = make_incident()

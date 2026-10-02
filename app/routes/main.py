@@ -11,6 +11,7 @@ from app.repositories.reports import (
     get_incident_reports,
     get_report,
 )
+from app.repositories.locations import get_location, list_locations
 from app.services.duplicate_detector import (
     DUPLICATE_THRESHOLD,
     calculate_similarity,
@@ -33,15 +34,39 @@ def home():
 
 @main_bp.route("/report", methods=["GET", "POST"])
 def report():
-    form_data = {"category": "", "location": "", "description": ""}
+    form_data = {
+        "category": "",
+        "location": "",
+        "location_id": "",
+        "location_detail": "",
+        "description": "",
+    }
     errors = {}
 
     if request.method == "POST":
+        location_id_value = request.form.get("location_id", "").strip()
+        location_id = None
+        location = request.form.get("location", "")
+        if location_id_value:
+            try:
+                location_id = int(location_id_value)
+            except ValueError:
+                errors["location"] = "Choose a valid campus location."
+            selected_location = get_location(location_id) if location_id else None
+            if selected_location is None:
+                errors["location"] = "Choose a valid campus location."
+            else:
+                location = f"{selected_location.building} - {selected_location.area}"
+
         form_data, errors = validate_report(
             request.form.get("category", ""),
-            request.form.get("location", ""),
+            location,
             request.form.get("description", ""),
+            location_id,
+            request.form.get("location_detail", ""),
         )
+        if "location" in errors and location_id_value:
+            errors["location"] = "Choose a valid campus location."
         if not errors:
             report = create_report(**form_data)
             candidates = find_duplicate_candidates(
@@ -68,6 +93,7 @@ def report():
     return render_template(
         "report.html",
         categories=CATEGORIES,
+        locations=list_locations(),
         form_data=form_data,
         errors=errors,
     )

@@ -42,6 +42,8 @@ def calculate_category_score(report, incident):
 
 
 def calculate_location_score(report, incident):
+    if report.location_id is not None and report.location_id == incident.location_id:
+        return LOCATION_POINTS
     return LOCATION_POINTS if normalize_location(report.location) == normalize_location(incident.location) else 0
 
 

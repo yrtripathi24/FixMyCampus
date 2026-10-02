@@ -12,15 +12,34 @@ def _to_incident(row):
     return Incident(**dict(row)) if row else None
 
 
-def create_incident(title, category, location, status="OPEN", priority="MEDIUM"):
+def create_incident(
+    title,
+    category,
+    location,
+    status="OPEN",
+    priority="MEDIUM",
+    location_id=None,
+    location_detail="",
+):
     timestamp = _now()
     cursor = get_db().execute(
         """
         INSERT INTO incidents
-            (title, category, location, status, priority, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+            (title, category, location, location_id, location_detail,
+             status, priority, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
-        (title, category, location, status, priority, timestamp, timestamp),
+        (
+            title,
+            category,
+            location,
+            location_id,
+            location_detail,
+            status,
+            priority,
+            timestamp,
+            timestamp,
+        ),
     )
     get_db().commit()
     return get_incident(cursor.lastrowid)

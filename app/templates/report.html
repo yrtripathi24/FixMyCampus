@@ -23,9 +23,20 @@
             </select>
             {% if errors.category %}<p class="field-error">{{ errors.category }}</p>{% endif %}
 
-            <label for="location">Location</label>
-            <input id="location" name="location" value="{{ form_data.location }}" maxlength="120" required>
+            <label for="location_id">Location</label>
+            <select id="location_id" name="location_id" required>
+                <option value="">Select a campus location</option>
+                {% for location in locations %}
+                    <option value="{{ location.id }}" {% if form_data.location_id|string == location.id|string %}selected{% endif %}>
+                        {{ location.building }} · {{ location.floor }} · {{ location.area }}
+                    </option>
+                {% endfor %}
+            </select>
             {% if errors.location %}<p class="field-error">{{ errors.location }}</p>{% endif %}
+
+            <label for="location_detail">Location details <span class="muted">(optional)</span></label>
+            <input id="location_detail" name="location_detail" value="{{ form_data.location_detail }}" maxlength="200" placeholder="Beside the vending machine">
+            {% if errors.location_detail %}<p class="field-error">{{ errors.location_detail }}</p>{% endif %}
 
             <label for="description">Description</label>
             <textarea id="description" name="description" rows="6" maxlength="1000" required>{{ form_data.description }}</textarea>
