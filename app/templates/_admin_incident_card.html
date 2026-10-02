@@ -1,0 +1,19 @@
+<article class="admin-incident-card">
+    <div>
+        <p class="status status-{{ incident.status|lower }}">{{ incident.status.replace('_', ' ') }}</p>
+        <h3><a href="{{ url_for('main.incident_detail', incident_id=incident.id) }}">{{ incident.title }}</a></h3>
+        <p>{{ incident.category }} · {{ incident.location }}</p>
+        <p><strong>Reports:</strong> {{ report_counts[incident.id] }} · <strong>Priority:</strong> {{ incident.priority }}</p>
+    </div>
+    {% if incident.status == "OPEN" %}
+        <form method="post" action="{{ url_for('main.admin_update_status', incident_id=incident.id) }}">
+            <input type="hidden" name="status" value="IN_PROGRESS">
+            <button class="button button-small" type="submit">Start work</button>
+        </form>
+    {% elif incident.status == "IN_PROGRESS" %}
+        <form method="post" action="{{ url_for('main.admin_update_status', incident_id=incident.id) }}">
+            <input type="hidden" name="status" value="RESOLVED">
+            <button class="button button-small" type="submit">Mark resolved</button>
+        </form>
+    {% endif %}
+</article>

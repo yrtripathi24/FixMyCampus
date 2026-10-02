@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin dashboard - FixMyCampus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="page-shell admin-dashboard">
+        <nav class="top-nav">
+            <a class="back-link" href="{{ url_for('main.home') }}">FixMyCampus</a>
+            <a class="button button-small" href="{{ url_for('main.incidents') }}">Public dashboard</a>
+        </nav>
+        <p class="eyebrow">Maintenance workspace</p>
+        <h1>Admin dashboard</h1>
+        <p class="intro">Move incidents through the maintenance workflow and focus on the most urgent problems.</p>
+
+        <section class="admin-section">
+            <h2>Open incidents</h2>
+            {% for incident in open_incidents %}
+                {% include "_admin_incident_card.html" %}
+            {% else %}
+                <p class="empty-state">No open incidents.</p>
+            {% endfor %}
+        </section>
+
+        <section class="admin-section">
+            <h2>High priority</h2>
+            {% for incident in high_priority_incidents %}
+                {% include "_admin_incident_card.html" %}
+            {% else %}
+                <p class="empty-state">No high-priority incidents.</p>
+            {% endfor %}
+        </section>
+
+        <section class="admin-section">
+            <h2>Most reported</h2>
+            {% for incident in most_reported_incidents %}
+                {% include "_admin_incident_card.html" %}
+            {% else %}
+                <p class="empty-state">No incidents yet.</p>
+            {% endfor %}
+        </section>
+
+        <section class="admin-section">
+            <h2>Recently reported</h2>
+            {% for incident in recent_incidents %}
+                {% include "_admin_incident_card.html" %}
+            {% else %}
+                <p class="empty-state">No incidents yet.</p>
+            {% endfor %}
+        </section>
+
+        <section class="admin-section">
+            <h2>Resolved incidents</h2>
+            {% for incident in resolved_incidents %}
+                {% include "_admin_incident_card.html" %}
+            {% else %}
+                <p class="empty-state">No resolved incidents.</p>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

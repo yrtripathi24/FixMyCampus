@@ -62,6 +62,35 @@ def update_incident_priority(incident_id, priority):
     return get_incident(incident_id) if cursor.rowcount else None
 
 
+def update_incident_status(incident_id, status, transitioned_at=None):
+    timestamp = transitioned_at or _now()
+    if status == "IN_PROGRESS":
+        cursor = get_db().execute(
+            """
+            UPDATE incidents
+            SET status = ?, updated_at = ?, in_progress_at = COALESCE(in_progress_at, ?)
+            WHERE id = ?
+            """,
+            (status, timestamp, timestamp, incident_id),
+        )
+    elif status == "RESOLVED":
+        cursor = get_db().execute(
+            """
+            UPDATE incidents
+            SET status = ?, updated_at = ?, resolved_at = COALESCE(resolved_at, ?)
+            WHERE id = ?
+            """,
+            (status, timestamp, timestamp, incident_id),
+        )
+    else:
+        cursor = get_db().execute(
+            "UPDATE incidents SET status = ?, updated_at = ? WHERE id = ?",
+            (status, timestamp, incident_id),
+        )
+    get_db().commit()
+    return get_incident(incident_id) if cursor.rowcount else None
+
+
 def list_incidents(category=None, status=None):
     query = "SELECT * FROM incidents"
     filters = []

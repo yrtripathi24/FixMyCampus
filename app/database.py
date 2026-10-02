@@ -28,7 +28,9 @@ CREATE TABLE IF NOT EXISTS incidents (
     priority TEXT NOT NULL DEFAULT 'MEDIUM'
         CHECK (priority IN ('LOW', 'MEDIUM', 'HIGH')),
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at TEXT NOT NULL,
+    in_progress_at TEXT,
+    resolved_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS reports (
@@ -85,6 +87,8 @@ def _add_missing_columns(db):
     for table, definition in (
         ("incidents", "location_id INTEGER REFERENCES locations(id)"),
         ("incidents", "location_detail TEXT NOT NULL DEFAULT ''"),
+        ("incidents", "in_progress_at TEXT"),
+        ("incidents", "resolved_at TEXT"),
         ("reports", "location_id INTEGER REFERENCES locations(id)"),
         ("reports", "location_detail TEXT NOT NULL DEFAULT ''"),
     ):

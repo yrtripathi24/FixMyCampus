@@ -22,6 +22,8 @@ class Incident:
     updated_at: str
     location_id: int | None = None
     location_detail: str = ""
+    in_progress_at: str | None = None
+    resolved_at: str | None = None
 
 
 @dataclass(frozen=True)

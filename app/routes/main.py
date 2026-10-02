@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, render_template, request
+from flask import Blueprint, abort, redirect, render_template, request, url_for
 
 from app.repositories.incidents import (
     count_incident_reports,
@@ -17,6 +17,11 @@ from app.services.duplicate_detector import (
     calculate_similarity,
     find_duplicate_candidates,
 )
+from app.services.admin_service import (
+    InvalidStatusTransition,
+    get_admin_dashboard,
+    transition_incident_status,
+)
 from app.services.report_service import (
     CATEGORIES,
     create_incident_for_report,
@@ -31,6 +36,23 @@ main_bp = Blueprint("main", __name__)
 @main_bp.get("/")
 def home():
     return render_template("home.html")
+
+
+@main_bp.get("/admin/incidents")
+def admin_incidents():
+    return render_template("admin_dashboard.html", **get_admin_dashboard())
+
+
+@main_bp.post("/admin/incidents/<int:incident_id>/status")
+def admin_update_status(incident_id):
+    incident = get_incident(incident_id)
+    if incident is None:
+        abort(404)
+    try:
+        transition_incident_status(incident, request.form.get("status", ""))
+    except InvalidStatusTransition:
+        abort(400)
+    return redirect(url_for("main.admin_incidents"))
 
 
 @main_bp.route("/report", methods=["GET", "POST"])

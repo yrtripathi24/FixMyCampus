@@ -222,6 +222,30 @@ textarea {
     color: #39734a;
 }
 
+.admin-section {
+    margin-top: 3rem;
+}
+
+.admin-incident-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #d4e0d6;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+.admin-incident-card h3 {
+    margin: 0.35rem 0;
+}
+
+.admin-incident-card h3 a {
+    color: inherit;
+}
+
 .decision-actions {
     display: flex;
     flex-wrap: wrap;
