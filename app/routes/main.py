@@ -38,6 +38,7 @@ from app.services.report_service import (
     validate_report,
 )
 from app.services.photo_service import PhotoValidationError, save_photo
+from app.services.analytics_service import get_analytics
 
 
 main_bp = Blueprint("main", __name__)
@@ -46,6 +47,11 @@ main_bp = Blueprint("main", __name__)
 @main_bp.get("/")
 def home():
     return render_template("home.html")
+
+
+@main_bp.get("/analytics")
+def analytics():
+    return render_template("analytics.html", **get_analytics())
 
 
 @main_bp.get("/uploads/<path:filename>")

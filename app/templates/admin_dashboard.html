@@ -10,7 +10,10 @@
     <main class="page-shell admin-dashboard">
         <nav class="top-nav">
             <a class="back-link" href="{{ url_for('main.home') }}">FixMyCampus</a>
-            <a class="button button-small" href="{{ url_for('main.incidents') }}">Public dashboard</a>
+            <span>
+                <a class="button button-small" href="{{ url_for('main.incidents') }}">Public dashboard</a>
+                <a class="button button-small" href="{{ url_for('main.analytics') }}">Analytics</a>
+            </span>
         </nav>
         <p class="eyebrow">Maintenance workspace</p>
         <h1>Admin dashboard</h1>

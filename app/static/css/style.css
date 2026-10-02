@@ -254,6 +254,58 @@ textarea {
     color: inherit;
 }
 
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1rem;
+    margin: 2rem 0 3rem;
+}
+
+.metric-card {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border: 1px solid #d4e0d6;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+.metric-card span {
+    color: #65706a;
+    font-size: 0.9rem;
+}
+
+.metric-card strong {
+    color: #22643a;
+    font-size: 2rem;
+}
+
+.analytics-section {
+    max-width: 46rem;
+    margin-top: 3rem;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 12rem) 1fr 2rem;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+}
+
+.bar-track {
+    height: 0.75rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dce8de;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: #39734a;
+}
+
 .decision-actions {
     display: flex;
     flex-wrap: wrap;
@@ -283,5 +335,14 @@ textarea {
 
     .filter-form select {
         width: 100%;
+    }
+
+    .bar-row {
+        grid-template-columns: 1fr 2rem;
+    }
+
+    .bar-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
     }
 }
