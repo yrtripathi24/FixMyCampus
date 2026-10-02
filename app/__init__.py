@@ -31,6 +31,7 @@ def create_app(test_config=None):
 
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(seed_demo_command)
 
     @app.after_request
     def add_security_headers(response):
@@ -56,3 +57,13 @@ def create_app(test_config=None):
 def init_db_command():
     """Initialize the configured SQLite database."""
     init_db()
+
+
+@click.command("seed-demo")
+@with_appcontext
+def seed_demo_command():
+    """Add realistic demonstration incidents and reports."""
+    from app.services.demo_data_service import seed_demo_data
+
+    created = seed_demo_data()
+    click.echo(f"Created {created} demo incident(s).")
